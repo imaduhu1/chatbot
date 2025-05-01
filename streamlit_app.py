@@ -38,11 +38,11 @@ prompt = st.text_input("You:", placeholder="Type your question here…")
 # Send button triggers API call
 if st.button("Send") and prompt:
     st.session_state.history.append({"role": "user", "content": prompt})
-    with st.spinner("SarahGPT is thinking..."):
+    with st.spinner("Sarah is thinking..."):
         #  Use the new client.chat.completions endpoint
         response = client.chat.completions.create(
             model=model,
-            messages=[{"role":"system","content":"You are SarahGPT, a friendly assistant."}]
+            messages=[{"role":"system","content":"You are Sarah, a friendly assistant."}]
                      + st.session_state.history,
             temperature=temperature,
         )
