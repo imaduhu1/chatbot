@@ -1,11 +1,16 @@
 import os
 import streamlit as st
-import openai
 from dotenv import load_dotenv
+
+#  Import the new client
+from openai import OpenAI
 
 # Load API key from .env
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Instantiate v1 client
+client = OpenAI(api_key=api_key)
 
 # Page configuration
 st.set_page_config(
@@ -34,11 +39,12 @@ prompt = st.text_input("You:", placeholder="Type your question here…")
 if st.button("Send") and prompt:
     st.session_state.history.append({"role": "user", "content": prompt})
     with st.spinner("SarahGPT is thinking..."):
-        response = openai.ChatCompletion.create(
+        #  Use the new client.chat.completions endpoint
+        response = client.chat.completions.create(
             model=model,
-            messages=[{"role":"system","content":"You are SarahGPT, a friendly assistant."}] + st.session_state.history,
+            messages=[{"role":"system","content":"You are SarahGPT, a friendly assistant."}]
+                     + st.session_state.history,
             temperature=temperature,
-            stream=False
         )
     answer = response.choices[0].message.content
     st.session_state.history.append({"role": "assistant", "content": answer})
@@ -53,4 +59,3 @@ for msg in st.session_state.history:
 # Clear chat history
 if st.sidebar.button("Clear chat"):
     st.session_state.history = []
-
