@@ -25,7 +25,7 @@ if "history" not in st.session_state:
 
 # App header
 st.title("SarahGPT")
-st.markdown("Ask anything — SarahGPT is here to help!")
+st.markdown("Ask anything — Sarah is here to help!")
 
 # User input
 prompt = st.text_input("You:", placeholder="Type your question here…")
