@@ -7,7 +7,7 @@ from openai import OpenAI
 
 # Load API key
 load_dotenv()
-api_key = os.getenv("https://github.com/imaduhu1/chatbot/blob/main/streamlit_app.py")
+api_key = os.getenv("https://C:\Users\innoc\chatbot\venv")
 
 # Instantiate v1 client
 client = OpenAI(api_key=api_key)
