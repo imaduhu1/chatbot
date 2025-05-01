@@ -2,7 +2,7 @@
 
 A simple Streamlit app template for you to modify!
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://github.com/imaduhu1/imaduhu1/blob/main/streamlit_app.py)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://imaduhu1-imaduhu1-streamlit-app-wil17s.streamlit.app/)
 
 ### How to run it on your own machine
 
