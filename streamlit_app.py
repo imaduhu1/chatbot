@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 
-#  Import the new client
+# Import the new client
 from openai import OpenAI
 
 # Load API key from .env
@@ -39,10 +39,10 @@ prompt = st.text_input("You:", placeholder="Type your question here…")
 if st.button("Send") and prompt:
     st.session_state.history.append({"role": "user", "content": prompt})
     with st.spinner("Sarah is thinking..."):
-        #  Use the new client.chat.completions endpoint
+        # Use the new client.chat.completions endpoint
         response = client.chat.completions.create(
             model=model,
-            messages=[{"role":"system","content":"You are Sarah, a friendly assistant."}]
+            messages=[{"role": "system", "content": "You are Sarah, a friendly assistant."}]
                      + st.session_state.history,
             temperature=temperature,
         )
@@ -59,3 +59,4 @@ for msg in st.session_state.history:
 # Clear chat history
 if st.sidebar.button("Clear chat"):
     st.session_state.history = []
+
