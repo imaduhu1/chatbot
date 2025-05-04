@@ -3,7 +3,7 @@
 import streamlit as st
 from replicate_utils import ask_mistral
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import TextLoader
+from langchain_community.document_loaders import TextLoader
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 
@@ -45,3 +45,4 @@ if user_question:
 
     st.markdown("### 💬 Response")
     st.markdown(f"**SarahGPT:** {response}")
+
