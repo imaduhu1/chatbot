@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # ✅ Initialize new v1.x OpenAI client
-client = openai.OpenAI(api_key="sk-...")  # Replace with your key
+client = openai.OpenAI(api_key="sk-...j88A")  # Replace with your key
 
 # 📄 Page config
 st.set_page_config(
