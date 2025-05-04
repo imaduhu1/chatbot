@@ -2,7 +2,7 @@
 
 import streamlit as st
 from replicate_utils import ask_mistral
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import TextLoader
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -19,7 +19,7 @@ loader = TextLoader("EnterpriseRisk.txt")
 raw_documents = loader.load()
 
 # Split into smaller chunks for embeddings
-splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 chunks = splitter.split_documents(raw_documents)
 
 # -------------------------------
@@ -45,6 +45,3 @@ if user_question:
 
     st.markdown("### 💬 Response")
     st.markdown(f"**SarahGPT:** {response}")
-
-
-
