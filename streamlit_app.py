@@ -1,8 +1,8 @@
 import streamlit as st
 import openai
 
-# 🔑 Hardcode your API key here (⚠️ Not recommended for production — better to use secrets in Streamlit Cloud)
-openai.api_key = "sk-..."  # 👈🏽 Replace with your actual OpenAI key
+# ✅ Initialize new v1.x OpenAI client
+client = openai.OpenAI(api_key="sk-...")  # Replace with your key
 
 # 📄 Page config
 st.set_page_config(
@@ -31,14 +31,14 @@ prompt = st.text_input("You:", placeholder="Type your question here…")
 if st.button("Send") and prompt:
     st.session_state.history.append({"role": "user", "content": prompt})
     with st.spinner("Sarah is thinking..."):
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=[
                 {"role": "system", "content": "You are Sarah, a friendly assistant."}
             ] + st.session_state.history,
             temperature=temperature,
         )
-    answer = response.choices[0].message["content"]
+    answer = response.choices[0].message.content
     st.session_state.history.append({"role": "assistant", "content": answer})
 
 # 📜 Render conversation
@@ -49,3 +49,4 @@ for msg in st.session_state.history:
 # 🧹 Clear history
 if st.sidebar.button("Clear chat"):
     st.session_state.history = []
+
