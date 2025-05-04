@@ -8,7 +8,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 import os
 
 # Load documents
-loader = TextLoader("Insurance.txt")  
+loader = TextLoader("EnterpriseRisk.txt")  
 raw_docs = loader.load()
 
 # Split into chunks
