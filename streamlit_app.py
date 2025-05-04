@@ -1,51 +1,36 @@
+# streamlit_app.py
 import streamlit as st
-import openai
+from replicate_utils import ask_mistral
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.document_loaders import TextLoader
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
+import os
 
-# ✅ Initialize new v1.x OpenAI client
-client = openai.OpenAI(api_key="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") 
-# 📄 Page config
-st.set_page_config(
-    page_title="SarahGPT 🤖",
-    layout="centered",
-    initial_sidebar_state="expanded"
-)
+# Load documents
+loader = TextLoader("Insurance.txt")  
+raw_docs = loader.load()
 
-# ⚙️ Sidebar settings
-st.sidebar.title("Settings")
-model = st.sidebar.selectbox("Model", ["gpt-4o", "gpt-3.5-turbo"])
-temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
+# Split into chunks
+splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+docs = splitter.split_documents(raw_docs)
 
-# 💬 Chat history session state
-if "history" not in st.session_state:
-    st.session_state.history = []
+# Create vector store
+embedding_model = HuggingFaceEmbeddings()
+vectordb = Chroma.from_documents(docs, embedding_model)
+retriever = vectordb.as_retriever()
 
-# 🧠 Title & intro
-st.title("SarahGPT")
-st.markdown("Ask anything — Sarah is here to help!")
+# Streamlit UI
+st.set_page_config(page_title="SarahGPT (Replicate)", layout="centered")
+st.title("🤖 SarahGPT – Custom Document Chatbot")
+st.markdown("Ask anything based on your uploaded documents.")
 
-# 🗣️ User prompt
-prompt = st.text_input("You:", placeholder="Type your question here…")
+user_input = st.text_input("Your Question:")
+if user_input:
+    matched_docs = retriever.get_relevant_documents(user_input)
+    context = "\n".join([doc.page_content for doc in matched_docs])
+    with st.spinner("Thinking..."):
+        response = ask_mistral(prompt=user_input, context=context)
+    st.markdown(f"**Answer:** {response}")
 
-# 🚀 On send
-if st.button("Send") and prompt:
-    st.session_state.history.append({"role": "user", "content": prompt})
-    with st.spinner("Sarah is thinking..."):
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "You are Sarah, a friendly assistant."}
-            ] + st.session_state.history,
-            temperature=temperature,
-        )
-    answer = response.choices[0].message.content
-    st.session_state.history.append({"role": "assistant", "content": answer})
-
-# 📜 Render conversation
-for msg in st.session_state.history:
-    tag = "**You:**" if msg["role"] == "user" else "**SarahGPT:**"
-    st.markdown(f"{tag} {msg['content']}")
-
-# 🧹 Clear history
-if st.sidebar.button("Clear chat"):
-    st.session_state.history = []
 
