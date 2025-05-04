@@ -2,8 +2,7 @@ import streamlit as st
 import openai
 
 # ✅ Initialize new v1.x OpenAI client
-client = openai.OpenAI(api_key="sk-...j88A")  # Replace with your key
-
+client = openai.OpenAI(api_key="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") 
 # 📄 Page config
 st.set_page_config(
     page_title="SarahGPT 🤖",
